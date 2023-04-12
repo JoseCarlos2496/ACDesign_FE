@@ -141,8 +141,17 @@ export class NotaVentaComponent {
     });
   }
 
+  snooze = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+  dormir = async () => {
+    console.log('About to snooze without halting the event loop...');
+    await this.snooze(5000);
+    console.log('done!');
+  };
+
   guardar() {
     this.addCabecera();
     this.addDetalle();
+    this.dormir();
   }
 }

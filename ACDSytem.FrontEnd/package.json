@@ -2,6 +2,7 @@
   "name": "acdsystem",
   "version": "0.0.0",
   "scripts": {
+    "dev": "nodemon app",
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
