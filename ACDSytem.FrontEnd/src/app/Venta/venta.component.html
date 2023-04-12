@@ -1,0 +1,78 @@
+<div>
+  <br /><br />
+  <span class="gap">
+    <a href="http://localhost:4200/persona">
+      <button mat-raised-button color="primary">Nuevo</button>
+    </a>
+  </span>
+</div>
+
+<div class="parent">
+  <div class="left">
+    <div *ngFor="let product of products" class="card-container">
+      <div class="left-card">
+        <h3>{{ product.nombre }}</h3>
+        <h4>{{ product.descripcion }}</h4>
+        <h5>
+          <span class="pvp">P.V.P:</span>
+          ${{ product.pvp }}
+        </h5>
+      </div>
+      <div class="right-card">
+        <button mat-icon-button (click)="removeItem(product)">
+          <mat-icon>remove_shopping_cart</mat-icon>
+        </button>
+        <h2>
+          {{ product.cantidad ? product.cantidad : 0 }}
+        </h2>
+        <button mat-icon-button (click)="addItem(product)">
+          <mat-icon>add_shopping_cart</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="right">
+    <div class="card-container-resume">
+      <!--
+      <h1>Items</h1>
+      <ng-container *ngFor="let product of cart">
+        <div *ngIf="product.cantidad > 0">
+          <h4>{{ product.cantidad }}</h4>
+          <h3>{{ product.nombre }}</h3>
+          <h5>{{ product.cantidad * product.pvp }}</h5>
+        </div>
+      </ng-container>
+        -->
+      <h1>Items</h1>
+      <table id="carrito">
+        <thead>
+          <tr>
+            <th>Cantidad</th>
+            <th>Nombre</th>
+            <th>V/U</th>
+            <th>PVP</th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let product of cart">
+            <tr *ngIf="product.cantidad > 0">
+              <td>{{ product.cantidad }}</td>
+              <td>{{ product.nombre }}</td>
+              <td>{{ product.pvp }}</td>
+              <td>{{ product.cantidad * product.pvp }}</td>
+            </tr>
+          </ng-container>
+          <tr>
+            <th style="background-color: #999999; color: white" colspan="3">
+              Total
+            </th>
+            <td>{{ total() }}</td>
+          </tr>
+        </tbody>
+      </table>
+      <br />
+      <button (click)="cartFinal()">COMPRAR</button>
+    </div>
+  </div>
+</div>

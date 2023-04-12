@@ -1,0 +1,250 @@
+<h1>Modulo de Usuario</h1>
+
+<div>
+  <jw-modal id="formUsuario">
+    <h1>Datos a editar</h1>
+    <mat-form-field appearance="fill" [floatLabel]="getFloatLabelValue()">
+      <mat-label>Nombre de Usuario</mat-label>
+      <input
+        matInput
+        [(ngModel)]="username"
+        type="string"
+        placeholder="Nombre de Usuario"
+        maxlength="16"
+        required
+      />
+    </mat-form-field>
+
+    <!--<mat-form-field [hidden]="!ocultar" -->
+    <mat-form-field appearance="fill" [floatLabel]="getFloatLabelValue()">
+      <mat-label>Contraseña</mat-label>
+      <input
+        matInput
+        [(ngModel)]="contrasena"
+        type="string"
+        placeholder="contrasena"
+        [type]="hide ? 'password' : 'text'"
+        required
+      />
+      <button
+        mat-icon-button
+        matSuffix
+        (click)="hide = !hide"
+        [attr.aria-label]="'Ocultar contraseña'"
+        [attr.aria-pressed]="hide"
+      >
+        <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
+      </button>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Rol</mat-label>
+      <mat-select id="selector" [(ngModel)]="rol">
+        <mat-option *ngFor="let rol of roles" [value]="rol.value">
+          {{ rol.viewValue }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" [floatLabel]="getFloatLabelValue()">
+      <mat-label>Correo</mat-label>
+      <input
+        matInput
+        [(ngModel)]="email"
+        type="email"
+        placeholder="pat@example.com"
+        required
+      />
+    </mat-form-field>
+
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="updateUsuario()"
+      title="Actualizar"
+    >
+      <mat-icon> border_color</mat-icon><span>Actualizar</span>
+    </button>
+    &nbsp;
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="_modalService.close()"
+      title="Salir"
+    >
+      <mat-icon>exit_to_app</mat-icon><span>Salir</span>
+    </button>
+  </jw-modal>
+</div>
+
+<div class="container">
+  <div class="form-fields">
+    <mat-tab-group
+      #tabRef
+      dynamicHeight
+      (selectedTabChange)="logChange(tabRef.selectedIndex)"
+    >
+      <mat-tab label="Usuarios">
+        <mat-card class="tarjeta">
+          <mat-card-content>
+            <table
+              mat-table
+              [dataSource]="usuarioslista"
+              class="mat-elevation-z8"
+            >
+              <!-- id Column -->
+              <ng-container matColumnDef="Id">
+                <th mat-header-cell *matHeaderCellDef>No.</th>
+                <td mat-cell *matCellDef="let element">{{ element.id }}</td>
+              </ng-container>
+              <!-- Nombre de Usuario Column -->
+              <ng-container matColumnDef="Nombre de Usuario">
+                <th mat-header-cell *matHeaderCellDef>Nombre de Usuario</th>
+                <td mat-cell *matCellDef="let element">
+                  {{ element.username }}
+                </td>
+              </ng-container>
+              <!-- Rol Column -->
+              <ng-container matColumnDef="Rol">
+                <th mat-header-cell *matHeaderCellDef>Rol</th>
+                <td mat-cell *matCellDef="let element">{{ element.rol }}</td>
+              </ng-container>
+              <!-- Correo Column -->
+              <ng-container matColumnDef="Correo">
+                <th mat-header-cell *matHeaderCellDef>Correo</th>
+                <td mat-cell *matCellDef="let element">
+                  {{ element.email }}
+                </td>
+              </ng-container>
+              <!-- Edit Column -->
+              <ng-container matColumnDef="Editar">
+                <th mat-header-cell *matHeaderCellDef>Editar</th>
+                <td mat-cell *matCellDef="let element">
+                  <button
+                    mat-raised-button
+                    color="primary"
+                    (click)="_usuarioService.open('formUsuario', element)"
+                    title="Editar"
+                  >
+                    <mat-icon> border_color</mat-icon>
+                  </button>
+                </td>
+              </ng-container>
+              <!-- Eliminar Column -->
+              <ng-container matColumnDef="Eliminar">
+                <th mat-header-cell *matHeaderCellDef>Editar</th>
+                <td mat-cell *matCellDef="let element">
+                  <button
+                    mat-raised-button
+                    color="primary"
+                    (click)="deleteLUsuario(element)"
+                    title="Eliminar"
+                  >
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="columnas"></tr>
+              <tr mat-row *matRowDef="let row; columns: columnas"></tr>
+            </table>
+          </mat-card-content>
+        </mat-card>
+      </mat-tab>
+
+      <mat-tab label="Usuario Nuevo">
+        <mat-card class="tarjeta">
+          <mat-card-content>
+            <h3>Usuario Nuevo</h3>
+
+            <mat-form-field
+              appearance="fill"
+              [floatLabel]="getFloatLabelValue()"
+            >
+              <mat-label>Nombre de Usuario</mat-label>
+              <input
+                matInput
+                [(ngModel)]="username"
+                type="string"
+                placeholder="Nombre de Usuario"
+                maxlength="16"
+                (focusout)="usernameLostfocus(username)"
+                required
+              />
+            </mat-form-field>
+
+            <!--<mat-form-field [hidden]="!ocultar" -->
+            <mat-form-field
+              appearance="fill"
+              [floatLabel]="getFloatLabelValue()"
+            >
+              <mat-label>Contraseña</mat-label>
+              <input
+                matInput
+                [(ngModel)]="contrasena"
+                type="string"
+                placeholder="contrasena"
+                [type]="hide ? 'password' : 'text'"
+                required
+              />
+              <button
+                mat-icon-button
+                matSuffix
+                (click)="hide = !hide"
+                [attr.aria-label]="'Ocultar contraseña'"
+                [attr.aria-pressed]="hide"
+              >
+                <mat-icon>{{
+                  hide ? "visibility_off" : "visibility"
+                }}</mat-icon>
+              </button>
+            </mat-form-field>
+
+            <mat-form-field
+              appearance="fill"
+              [floatLabel]="getFloatLabelValue()"
+            >
+              <mat-label>Rol</mat-label>
+              <mat-select [(ngModel)]="rol">
+                <mat-option *ngFor="let rol of roles" [value]="rol.value">
+                  {{ rol.viewValue }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field
+              appearance="fill"
+              [floatLabel]="getFloatLabelValue()"
+            >
+              <mat-label>Correo</mat-label>
+              <input
+                matInput
+                [(ngModel)]="email"
+                type="email"
+                placeholder="pat@example.com"
+                required
+              />
+            </mat-form-field>
+
+            <button
+              mat-raised-button
+              color="primary"
+              (click)="addUsuario()"
+              title="Guardar"
+            >
+              <mat-icon>save</mat-icon><span>Guardar</span>
+            </button>
+          </mat-card-content>
+        </mat-card>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+  <br />
+  <span class="gap">
+    <a href="{{ _constantes.base }}">
+      <button mat-raised-button color="primary">
+        <mat-icon>home</mat-icon><span>Inicio</span>
+      </button>
+    </a>
+  </span>
+</div>

@@ -1,0 +1,109 @@
+<div id="htmlData">
+  <table id="cabecera">
+    <tr>
+      <td rowspan="2" colspan="3" style="text-align: left; font-weight: bold">
+        <img
+          width="100"
+          alt="AC Design Logo"
+          src="assets/Logo.png"
+          crossorigin
+        />
+      </td>
+      <td
+        style="border: 1px solid #999999; text-align: center; font-weight: bold"
+      >
+        R.U.C.
+      </td>
+      <td
+        style="border: 1px solid #999999; text-align: center; font-weight: bold"
+      >
+        0803784206001
+      </td>
+    </tr>
+    <tr>
+      <td
+        colspan="2"
+        style="border: 1px solid #999999; text-align: center; font-weight: bold"
+      >
+        NOTA DE VENTA
+      </td>
+    </tr>
+    <tr>
+      <td colspan="3">Contribuyente Negocio Popular - Régimen RIMPE</td>
+      <td
+        rowspan="2"
+        colspan="2"
+        style="border: 1px solid #999999; text-align: center; font-weight: bold"
+      >
+        NO. {{ idCabecera }}
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2" noWrap>
+        Dirección Matriz: Sucre entre Piedrahita y 9 de Octubre
+      </td>
+      <td style="color: white"></td>
+      <td></td>
+    </tr>
+    <br />
+    <tr id="datos">
+      <td style="font-weight: bold">Sr(es):</td>
+      <td colspan="2">{{ persona.nombre + " " + persona.apellido }}</td>
+      <td style="font-weight: bold; text-align: right">RUC/CI:</td>
+      <td>{{ persona.cedulaRUC }}</td>
+    </tr>
+    <tr id="datos">
+      <td style="font-weight: bold">Fecha Emisión:</td>
+      <td>{{ fecha }}</td>
+      <td style="font-weight: bold; text-align: right" colspan="2">
+        Forma de pago:
+      </td>
+      <td>{{ formaPago }}</td>
+    </tr>
+  </table>
+  <br />
+  <br />
+  <br />
+  <table id="nota-venta">
+    <thead>
+      <tr>
+        <th>Cantidad</th>
+        <th colspan="2">Nombre</th>
+        <th>P. Unitario</th>
+        <th>P. Total</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <ng-container *ngFor="let product of carrito">
+        <tr *ngIf="product.cantidad > 0">
+          <td style="text-align: center">{{ product.cantidad }}</td>
+          <td colspan="2">{{ product.nombre }}</td>
+          <td style="text-align: center">{{ product.pvp }}</td>
+          <td style="text-align: center">
+            {{ product.cantidad * product.pvp }}
+          </td>
+        </tr>
+      </ng-container>
+
+      <tr>
+        <td>&nbsp;</td>
+        <th
+          style="background-color: #999999; color: white; font-weight: bold"
+          colspan="3"
+        >
+          Total
+        </th>
+        <td style="text-align: center; font-weight: bold">
+          {{ total() }}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<button class="btn btn-success btn-block" (click)="createPdf()">
+  Download PDF
+</button>
+&nbsp;
+<button class="btn btn-success btn-block" (click)="guardar()">Guardar</button>

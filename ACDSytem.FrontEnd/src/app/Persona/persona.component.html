@@ -1,0 +1,95 @@
+<h1>Modulo de Personas</h1>
+
+<div class="container">
+  <!--<form [formGroup]="personasFormBuilder">-->
+  <div>
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="getByIdentificacion(cedulaRuc)"
+      title="Buscar"
+    >
+      <mat-icon>search</mat-icon>
+    </button>
+    &nbsp;
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="addPersona()"
+      title="Guardar"
+    >
+      <mat-icon>save</mat-icon>
+    </button>
+    &nbsp;
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="updatePersona()"
+      title="Editar"
+    >
+      <mat-icon> border_color</mat-icon>
+    </button>
+  </div>
+  <br />
+  <div class="form-fields">
+    <mat-form-field appearance="fill" [floatLabel]="getFloatLabelValue()">
+      <mat-label>Cédula/RUC</mat-label>
+      <input
+        matInput
+        [(ngModel)]="cedulaRuc"
+        type="string"
+        placeholder="Cédula/RUC"
+        minlength="10"
+        (focusout)="cedulaLostfocus(cedulaRuc)"
+        required
+      />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" [floatLabel]="getFloatLabelValue()">
+      <mat-label>Nombre</mat-label>
+      <input
+        matInput
+        [(ngModel)]="nombre"
+        type="string"
+        placeholder="Nombre"
+        required
+      />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" [floatLabel]="getFloatLabelValue()">
+      <mat-label>Apellido</mat-label>
+      <input
+        matInput
+        [(ngModel)]="apellido"
+        type="string"
+        placeholder="Apellido"
+        required
+      />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" [floatLabel]="getFloatLabelValue()">
+      <mat-label>Teléfono</mat-label>
+      <input matInput [(ngModel)]="telefono" placeholder="Teléfono" />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" [floatLabel]="getFloatLabelValue()">
+      <mat-label>Correo</mat-label>
+      <input
+        matInput
+        [(ngModel)]="correo"
+        type="email"
+        placeholder="pat@example.com"
+        required
+      />
+    </mat-form-field>
+  </div>
+
+  <br /><br />
+  <span class="gap">
+    <a href="{{ _constantes.venta }}">
+      <button mat-raised-button color="primary">Siguiente</button>
+    </a>
+  </span>
+
+  <!--</form>-->
+</div>

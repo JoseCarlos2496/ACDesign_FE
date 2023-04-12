@@ -1,0 +1,249 @@
+<h1>Modulo de Productos y Servicios</h1>
+
+<div>
+  <jw-modal id="formProductoServicio">
+    <h1>Datos a editar</h1>
+
+    <mat-form-field appearance="fill" [floatLabel]="getFloatLabelValue()">
+      <mat-label>Nombre del producto o servicio</mat-label>
+      <input
+        matInput
+        [(ngModel)]="nombre"
+        type="string"
+        placeholder="Nombre del producto o servicio"
+        maxlength="128"
+        required
+      />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" [floatLabel]="getFloatLabelValue()">
+      <mat-label>Descripción del producto o servicio</mat-label>
+      <input
+        matInput
+        [(ngModel)]="descripcion"
+        type="string"
+        placeholder="Descripción del producto o servicio"
+        maxlength="1024"
+        required
+      />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" [floatLabel]="getFloatLabelValue()">
+      <mat-label>PVP</mat-label
+      ><input
+        matInput
+        [(ngModel)]="pvp"
+        type="number"
+        placeholder="PVP del producto o servicio"
+        required
+      />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" [floatLabel]="getFloatLabelValue()">
+      <mat-label>Categoria</mat-label>
+      <mat-select [(ngModel)]="categoria">
+        <mat-option
+          *ngFor="let categoria of categorias"
+          [value]="categoria.value"
+        >
+          {{ categoria.viewValue }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="updateProductoServicio()"
+      title="Actualizar"
+    >
+      <mat-icon> border_color</mat-icon><span>Actualizar</span>
+    </button>
+    &nbsp;
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="_modalService.close()"
+      title="Salir"
+    >
+      <mat-icon>exit_to_app</mat-icon><span>Salir</span>
+    </button>
+  </jw-modal>
+</div>
+
+<div class="container">
+  <br />
+  <div class="form-fields">
+    <mat-tab-group
+      #tabRef
+      dynamicHeight
+      (selectedTabChange)="logChange(tabRef.selectedIndex)"
+    >
+      <mat-tab label="ProductosServicios">
+        <mat-card class="tarjeta">
+          <mat-card-content>
+            <table
+              mat-table
+              [dataSource]="productoserviciolista"
+              class="mat-elevation-z8"
+            >
+              <!-- id Column -->
+              <ng-container matColumnDef="Id">
+                <th mat-header-cell *matHeaderCellDef>Id</th>
+                <td mat-cell *matCellDef="let element">{{ element.id }}</td>
+              </ng-container>
+              <!-- Nombre de Producto Servicio Column -->
+              <ng-container matColumnDef="Nombre">
+                <th mat-header-cell *matHeaderCellDef>Nombre</th>
+                <td mat-cell *matCellDef="let element">
+                  {{ element.nombre }}
+                </td>
+              </ng-container>
+              <!-- DEscripcion de Producto Servicio Column -->
+              <ng-container matColumnDef="Descripcion">
+                <th mat-header-cell *matHeaderCellDef>Descripcion</th>
+                <td mat-cell *matCellDef="let element">
+                  {{ element.descripcion }}
+                </td>
+              </ng-container>
+              <!-- PVP de  de Producto Servicio Column -->
+              <ng-container matColumnDef="PVP">
+                <th mat-header-cell *matHeaderCellDef>PVP</th>
+                <td mat-cell *matCellDef="let element">
+                  {{ element.pvp }}
+                </td>
+              </ng-container>
+              <!-- Categoria de Producto Servicio Column -->
+              <ng-container matColumnDef="Categoria">
+                <th mat-header-cell *matHeaderCellDef>Categoria</th>
+                <td mat-cell *matCellDef="let element">
+                  {{ element.categoriaCadena }}
+                </td>
+              </ng-container>
+              <!-- Edit Column -->
+              <ng-container matColumnDef="Editar">
+                <th mat-header-cell *matHeaderCellDef>Editar</th>
+                <td mat-cell *matCellDef="let element">
+                  <button
+                    mat-raised-button
+                    color="primary"
+                    (click)="
+                      _productoServicioService.open(
+                        'formProductoServicio',
+                        element
+                      )
+                    "
+                    title="Editar"
+                  >
+                    <mat-icon> border_color</mat-icon>
+                  </button>
+                </td>
+              </ng-container>
+              <!-- Eliminar Column -->
+              <ng-container matColumnDef="Eliminar">
+                <th mat-header-cell *matHeaderCellDef>Editar</th>
+                <td mat-cell *matCellDef="let element">
+                  <button
+                    mat-raised-button
+                    color="primary"
+                    (click)="deleteProductoServicioL(element)"
+                    title="Editar"
+                  >
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="columnas"></tr>
+              <tr mat-row *matRowDef="let row; columns: columnas"></tr>
+            </table>
+          </mat-card-content>
+        </mat-card>
+      </mat-tab>
+
+      <mat-tab label="ProductoServicio Nuevo">
+        <mat-card class="tarjeta">
+          <mat-card-content>
+            <h3>Producto o Servicio Nuevo</h3>
+
+            <mat-form-field
+              appearance="fill"
+              [floatLabel]="getFloatLabelValue()"
+            >
+              <mat-label>Nombre del producto o servicio</mat-label>
+              <input
+                matInput
+                [(ngModel)]="nombre"
+                type="string"
+                placeholder="Nombre del producto o servicio"
+                maxlength="128"
+                required
+              />
+            </mat-form-field>
+
+            <mat-form-field
+              appearance="fill"
+              [floatLabel]="getFloatLabelValue()"
+            >
+              <mat-label>Descripción del producto o servicio</mat-label>
+              <input
+                matInput
+                [(ngModel)]="descripcion"
+                type="string"
+                placeholder="Descripción del producto o servicio"
+                maxlength="1024"
+                required
+              />
+            </mat-form-field>
+
+            <mat-form-field
+              appearance="fill"
+              [floatLabel]="getFloatLabelValue()"
+            >
+              <mat-label>PVP</mat-label
+              ><input
+                matInput
+                [(ngModel)]="pvp"
+                type="number"
+                placeholder="PVP del producto o servicio"
+                required
+              />
+            </mat-form-field>
+
+            <mat-form-field
+              appearance="fill"
+              [floatLabel]="getFloatLabelValue()"
+            >
+              <mat-label>Categoria</mat-label>
+              <mat-select [(ngModel)]="categoria">
+                <mat-option
+                  *ngFor="let categoria of categorias"
+                  [value]="categoria.value"
+                >
+                  {{ categoria.viewValue }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <button
+              mat-raised-button
+              color="primary"
+              (click)="addProductoServicio()"
+              title="Guardar"
+            >
+              <mat-icon>save</mat-icon><span>Guardar</span>
+            </button>
+          </mat-card-content>
+        </mat-card>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+  <br />
+  <span class="gap">
+    <a href="{{ _constantes.base }}">
+      <button mat-raised-button color="primary">
+        <mat-icon>home</mat-icon><span>Inicio</span>
+      </button>
+    </a>
+  </span>
+</div>
